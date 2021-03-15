@@ -5,7 +5,7 @@
   - App está funcional
   - Todas as telas foram refeitas
   - Adicionado swipe list view
-  - Implentadas funções de edição e remoção dos registros.
+  - Implementadas funções de edição e remoção dos registros.
 
 ## À implementar
   - Implementar as funcionalidades de todas as Views em apenas uma.
