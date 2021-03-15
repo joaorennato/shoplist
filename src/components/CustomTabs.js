@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import AddModal from './AddModal';
-
 export default ({state, navigation}) => {
 
-    const [showModal, setShowModal] = useState(false);
-
     const goTo = (screenName) => {
-        //navigation.navigate(screenName);
+        navigation.navigate(screenName);
+    }
+
+    const resetTo = (screenName) => {
         navigation.reset({
             routes: [{
                 name: screenName
@@ -18,46 +17,38 @@ export default ({state, navigation}) => {
     }
 
     return (
-        <Container>
-            <TabArea>
-                <TabItem onPress={()=>goTo('Home')}>
-                    <Icon 
-                        name="shopping-cart" 
-                        size={ state.index === 0 ? 32 : 24 } 
-                        color={ state.index === 0 ? "#1E8449" : "#FFFFFF"} 
-                    />
-                </TabItem>
-                <TabItem onPress={()=>goTo('Done')}>
-                    <Icon 
-                        name="check-square" 
-                        size={ state.index === 1 ? 32 : 24 } 
-                        color={ state.index === 1 ? "#1E8449" : "#FFFFFF"} 
-                    />
-                </TabItem>
-                <TabItem onPress={()=>goTo('Total')}>
-                    <Icon 
-                        name="dollar" 
-                        size={ state.index === 2 ? 32 : 24 } 
-                        color={ state.index === 2 ? "#1E8449" : "#FFFFFF"} 
-                    />
-                </TabItem>
-                <TabItemFilled onPress={()=>setShowModal(true)}>
-                    <Icon 
-                        name="plus-square" 
-                        size={ state.index === 3 ? 32 : 24 } 
-                        color="#FFFFFF" 
-                    />
-                </TabItemFilled>
-            </TabArea>
-
-            <AddModal showModal={showModal} setShowModal={setShowModal} />
-        </Container>
+        <TabArea>
+            <TabItem onPress={()=>resetTo('Home')}>
+                <Icon 
+                    name="shopping-cart" 
+                    size={ state.index === 0 ? 32 : 24 } 
+                    color={ state.index === 0 ? "#1E8449" : "#FFFFFF"} 
+                />
+            </TabItem>
+            <TabItem onPress={()=>resetTo('Done')}>
+                <Icon 
+                    name="check-square" 
+                    size={ state.index === 1 ? 32 : 24 } 
+                    color={ state.index === 1 ? "#1E8449" : "#FFFFFF"} 
+                />
+            </TabItem>
+            <TabItem onPress={()=>resetTo('Total')}>
+                <Icon 
+                    name="dollar" 
+                    size={ state.index === 2 ? 32 : 24 } 
+                    color={ state.index === 2 ? "#1E8449" : "#FFFFFF"} 
+                />
+            </TabItem>
+            <TabItemFilled onPress={()=>goTo('Add')}>
+                <Icon 
+                    name="plus-square" 
+                    size={ state.index === 3 ? 32 : 24 } 
+                    color="#FFFFFF" 
+                />
+            </TabItemFilled>
+        </TabArea>
     );
 }
-
-const Container = styled.KeyboardAvoidingView`
-
-`;
 
 const TabArea = styled.View`
     flex-direction: row;

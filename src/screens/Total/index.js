@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../../components/Header';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { useNavigation } from '@react-navigation/native';
 
 import { Container, ListArea, Lista, TotalArea, TextBold, TextNormal } from './style'; 
+
+import Header from '../../components/Header';
 import ListItem from '../../components/ListItem';
+import ListItemBack from '../../components/ListItemBack';
 
 import api from '../../api';
 
 export default () => {
+
+    const navigation = useNavigation();
 
     const [lista, setLista] = useState({});
     const [total, setTotal] = useState('');
@@ -28,8 +34,17 @@ export default () => {
         getLista();
     }
 
-    const toggleDone = async (id) => {
-        let novosProdutos = await api.toggleDone(id);
+    const editItem = (item) => {
+        navigation.navigate('Edit', {
+            id: item.id,
+            nome: item.nome,
+            quantidade: item.quantidade,
+            preco: item.preco
+        });
+    }
+
+    const toggleDone = async (item) => {
+        let novosProdutos = await api.toggleDone(item.id);
         setNovosProdutos = await api.setLista(novosProdutos);
         getLista();
     }
@@ -42,18 +57,20 @@ export default () => {
         <Container behavior={ Platform.OS === 'ios' ? 'padding' : 'margin' }>
             <Header titulo="Total de Compras" />
             <ListArea>
-                <Lista 
+                <SwipeListView 
                     data={lista} 
-                    renderItem={({item}) => <ListItem 
-                        id={item.id} 
-                        nome={item.nome} 
-                        quantidade={item.quantidade} 
-                        preco={item.preco} 
-                        done={item.done} 
-                        onPress={()=>toggleDone(item.id)} 
-                        onLongPress={()=>deleteItem(item.id)}
+                    keyExtractor={data => `${data.id}`} 
+                    renderItem={(data, rowMap) => <ListItem 
+                        id={data.item.id} 
+                        nome={data.item.nome} 
+                        quantidade={data.item.quantidade} 
+                        preco={data.item.preco} 
+                        done={data.item.done} 
+                        onPress={()=>toggleDone(data.item)}
                     />} 
-                    keyExtractor={item => item.id.toString() }
+                    renderHiddenItem={ (data, rowMap) => <ListItemBack onDelete={()=>deleteItem(data.item.id)} onEdit={()=>editItem(data.item)} />}
+                    leftOpenValue={75}
+                    rightOpenValue={-75}
                 />
             </ListArea>
             <TotalArea>

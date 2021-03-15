@@ -6,17 +6,19 @@ export default ({id, nome, quantidade, preco, done, onPress, onLongPress}) => {
 
     return (
         <ListItemContainer key={id}>
-            <ListItem onLongPress={onLongPress}>
-                <Infos>
-                    <Nome>{nome}</Nome>
-                    <InfoText>Quantidade: {quantidade}</InfoText>
-                    <InfoText>Preço: R$ {parseFloat(preco).toFixed(2)} - Total: R$ {parseFloat((quantidade*preco)).toFixed(2)}</InfoText>
-                </Infos>
-                <CheckArea>
-                    <CheckButton onPress={onPress} done={done == true ? true : false}>
-                        <Icon name="check" size={24} color="#FFFFFF" />
-                    </CheckButton>
-                </CheckArea>
+            <ListItem onPress={onPress}>
+                <ListInnerContainer>
+                    <Infos>
+                        <Nome>{nome}</Nome>
+                        <InfoText>Quantidade: {quantidade}</InfoText>
+                        <InfoText>Preço: R$ {parseFloat(preco).toFixed(2)} - Total: R$ {parseFloat((quantidade*preco)).toFixed(2)}</InfoText>
+                    </Infos>
+                    <CheckArea>
+                        <CheckButton done={done == true ? true : false}>
+                            <Icon name="check" size={24} color="#FFFFFF" />
+                        </CheckButton>
+                    </CheckArea>
+                </ListInnerContainer>
             </ListItem>
         </ListItemContainer>
     );
@@ -27,7 +29,9 @@ const ListItemContainer = styled.View`
     margin-bottom: 20px;
 `;
 
-const ListItem = styled.TouchableOpacity`
+const ListItem = styled.TouchableWithoutFeedback``;
+
+const ListInnerContainer = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -52,7 +56,7 @@ const InfoText = styled.Text`
 
 const CheckArea = styled.View``; 
 
-const CheckButton = styled.TouchableOpacity`
+const CheckButton = styled.View`
     align-items: center;
     justify-content: center;
     width: 40px;

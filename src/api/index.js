@@ -66,12 +66,28 @@ export default {
     addProduct: async (nome, quantidade, preco) => {
         let oldProdutos = await AsyncStorage.getItem('produtos');
         items = JSON.parse(oldProdutos);
-        items.push({
+        newItem = {
             id: Math.random(Date.now()),
             nome: nome,
             quantidade: parseInt(quantidade),
             preco: parseFloat(preco).toFixed(2),
             done: false
+        };
+
+        items = [newItem, ...items];
+
+        return items;
+    },
+
+    editProduct: async(produto) => {
+        let oldProdutos = await AsyncStorage.getItem('produtos');
+        let items = JSON.parse(oldProdutos);
+        items.forEach(item => {
+            if(item.id === produto.id){
+                item.nome = produto.nome;
+                item.quantidade = produto.quantidade;
+                item.preco = produto.preco;
+            }
         });
 
         return items;
