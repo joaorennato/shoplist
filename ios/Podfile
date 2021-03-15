@@ -19,7 +19,7 @@ target 'shoplist' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
-  use_flipper!({ 'Flipper-Folly' => '2.3.0' })
+  use_flipper!
   post_install do |installer|
     flipper_post_install(installer)
     installer.pods_project.targets.each do |target|

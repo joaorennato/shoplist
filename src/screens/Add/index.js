@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../../components/Header';
 
@@ -58,10 +58,10 @@ export default () => {
     },[]);
 
     return (
-        <Container>
+        <Container behavior={ Platform.OS === 'ios' ? 'padding' : 'margin' }>
             <Header titulo="Adicionar Produto" showBackButton={true} />
             <ListArea>
-                <Campos behavior={ Platform.OS === 'ios' ? 'padding' : 'margin' }>
+                <Campos>
                     <AreaCampoInput>
                         <Icone name="arrow-circle-right" size={24} color="#1E8449" />
                         <CampoInput 
@@ -84,7 +84,7 @@ export default () => {
                             value={quantidade} 
                             onChangeText={t=>setQuantidade(t)} 
                             keyboardType="number-pad" 
-                            returnKeyType={ Platform.OS === 'ios' ? 'done' : 'next' } 
+                            returnKeyType="next" 
                             ref={(input) => { quantidadeInput = input; }} 
                             onSubmitEditing={() => { precoInput.getElement().focus(); }} 
                             blurOnSubmit={false}

@@ -98,7 +98,7 @@ export default () => {
                             value={quantidade} 
                             onChangeText={t=>setQuantidade(t)} 
                             keyboardType="number-pad" 
-                            returnKeyType={ Platform.OS === 'ios' ? 'done' : 'next' } 
+                            returnKeyType="next" 
                             ref={(input) => { quantidadeInput = input; }} 
                             onSubmitEditing={() => { precoInput.getElement().focus(); }} 
                             blurOnSubmit={false}

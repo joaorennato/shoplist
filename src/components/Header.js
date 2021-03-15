@@ -8,8 +8,8 @@ export default ({titulo, showBackButton = false}) => {
     const navigation = useNavigation();
 
     return (
-        <HeaderArea>
-            <HeaderImage source={
+        <HeaderArea showBackButton={showBackButton}>
+            <HeaderImage showBackButton={showBackButton} source={
                 require('../assets/groceries.jpg')
             } />
             
@@ -25,7 +25,7 @@ export default ({titulo, showBackButton = false}) => {
 
 const HeaderArea = styled.View`
     width: 100%;
-    height: 250px;
+    height: ${props => props.showBackButton ? '150px' : '250px'};
     position: relative;
 `;
 
@@ -33,7 +33,7 @@ const HeaderImage = styled.Image.attrs({
     resizeMode: 'cover'
 })`
     width: 100%;
-    height: 250px;
+    height: ${props => props.showBackButton ? '150px' : '250px'};
     z-index: 4;
 `;
 
@@ -44,7 +44,8 @@ const HeaderTitleArea = styled.View`
     justify-content: space-between;
     position: absolute;
     left: ${props => props.showBackButton ? '5px' : '30px' }; top: 0;
-    height: 250px; width: 50%;
+    height: ${props => props.showBackButton ? '150px' : '250px'}; 
+    width: 50%;
     z-index: 5;
 `;
 

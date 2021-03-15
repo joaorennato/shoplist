@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInputMask } from 'react-native-masked-text';
 
-export const Container = styled.View`
+export const Container = styled.KeyboardAvoidingView`
     flex: 1;
     background-color: #FFFFFF;
 `;
@@ -18,7 +18,7 @@ export const ListArea = styled.View`
     background-color: #FFFFFF;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    margin-top: -20px;
+    margin-top: -25px;
     padding: 20px 0 0 0;
     z-index: 10;
 `;
