@@ -1,4 +1,4 @@
-package com.shoplist;
+package com.jrdev.shoplist;
 
 import android.app.Application;
 import android.content.Context;

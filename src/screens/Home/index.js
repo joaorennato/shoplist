@@ -1,85 +1,114 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import React, { useContext, useEffect } from 'react';
+import { Alert } from 'react-native';
 
 import Header from '../../components/Header';
 import ListItem from '../../components/ListItem';
-import ListItemBack from '../../components/ListItemBack';
 
-import { Container, ListArea } from './style'; 
+import { Container, ListArea, Spacer } from './style'; 
 
-import api from '../../api';
+import AppContext from '../../contexts';
 
 export default () => {
 
-    const navigation = useNavigation();
+    const { state, dispatch } = useContext(AppContext);
 
-    const [listaDone, setListaDone] = useState({});
-    const [listaNotDone, setListaNotDone] = useState({});
-    
-    const getListas = () => {
-        getListaDone();
-        getListaNotDone();
+    const handleShowPrompt = (item) => {
+        Alert.alert(
+            'O que deseja fazer?',
+            '',
+            [
+                {
+                    'text': 'Editar',
+                    onPress: () => {
+                        handleEdit(item)
+                    }
+                },
+                {
+                    'text': 'Excluir',
+                    onPress: () => {
+                        handleDelete(item)
+                    },
+                    'style': 'destructive'
+                },
+                {
+                    'text': 'Cancelar',
+                    onPress: () => {},
+                    'style': 'cancel'
+                },
+            ]
+        );
     }
 
-    const getListaDone = async () => {
-        let produtos = await api.getLista();
-        produtos = produtos.filter(item => item.done === true);
-        setListaDone(produtos);
+    const handleToggleDone = (item) => {
+        dispatch({
+            type: 'handleToggleDone',
+            payload: {
+                id: item.id,
+                done: !item.done
+            }
+        });
+        dispatch({
+            type: 'handleTotal',
+            payload: true
+        })
     }
 
-    const getListaNotDone = async () => {
-        let produtos = await api.getLista();
-        produtos = produtos.filter(item => item.done === false);
-        setListaNotDone(produtos);
-    }
+    const handleEdit = (item) => {
+        dispatch({
+            type: 'setEditItem',
+            payload: item
+        });
 
-    const editItem = (item) => {
-        navigation.navigate('Edit', {
-            id: item.id,
-            nome: item.nome,
-            quantidade: item.quantidade,
-            preco: item.preco
+        dispatch({
+            type: 'handleIsEdit',
+            payload: true
+        });
+
+        dispatch({
+            type: 'handleModal',
+            payload: true
         });
     }
 
-    const deleteItem = async (id) => {
-        let novosProdutos = lista.filter(item => item.id !== id);
-        await api.setLista(novosProdutos);
-        getListas();
-    }
 
-    const toggleDone = async (item) => {
-        let novosProdutos = await api.toggleDone(item.id);
-        setNovosProdutos = await api.setLista(novosProdutos);
-        getListas();
+    const handleDelete = (item) => {
+        dispatch({
+            type: 'handleDeleteProduto', 
+            payload: item.id
+        });
+
+        dispatch({
+            type: 'handleTotal',
+            payload: true
+        })
     }
 
     useEffect(()=>{
-        getListas();
+        //console.log(state);
     }, []);
 
     return (
-        <Container behavior={ Platform.OS === 'ios' ? 'padding' : 'margin' }>
+        <Container>
             <Header titulo="Lista de Compras" />
             <ListArea>
-                <SwipeListView 
-                    data={listaNotDone} 
-                    keyExtractor={data => `${data.id}`} 
-                    renderItem={(data, rowMap) => <ListItem 
-                        id={data.item.id} 
-                        nome={data.item.nome} 
-                        quantidade={data.item.quantidade} 
-                        preco={data.item.preco} 
-                        done={data.item.done} 
-                        onPress={()=>toggleDone(data.item)}
-                        onLongPress={()=>editItem(data.item)} 
-                    />} 
-                    renderHiddenItem={ (data, rowMap) => <ListItemBack onDelete={()=>deleteItem(data.item.id)} onEdit={()=>editItem(data.item)} />}
-                    leftOpenValue={75}
-                    rightOpenValue={-75}
-                />
+                {state.produtos.length > 0 && state.produtos.map((item,key) => {
+                    
+                    if(state.show_done === false && item.done === true) return;
+                    
+                    return (
+                        <ListItem 
+                            key={key} 
+                            item={item}
+                            onPress={()=>{
+                                handleToggleDone(item)
+                            }} 
+                            onLongPress={()=>{
+                                handleShowPrompt(item)
+                            }} />
+                    )
+
+                })}
+                <Spacer />
             </ListArea>
         </Container>
     );

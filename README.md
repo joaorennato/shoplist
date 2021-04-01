@@ -3,9 +3,7 @@
 
 ## Informações
   - App está funcional
-  - Todas as telas foram refeitas
-  - Adicionado swipe list view
-  - Implementadas funções de edição e remoção dos registros.
-
-## À implementar
-  - Implementar as funcionalidades de todas as Views em apenas uma.
+  - A funcionalidade de todas as telas foi incorporada em apenas uma tela
+  - Adiciona estado global 
+  - Removido swipe list view
+  - Funções de edição e remoção agora são acessadas através de um longPress
